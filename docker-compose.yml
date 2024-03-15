@@ -1,0 +1,31 @@
+version: "3.5"
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    env_file:
+      - .env.db
+    environment:
+      PGDATA: /data/postgres
+    volumes:
+      - postgres-db:/data/postgres
+
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - "8000:8000"
+    restart: always
+    env_file:
+      - .env
+    depends_on: [postgres]
+
+volumes:
+  postgres-db:
+    driver: local
