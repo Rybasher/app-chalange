@@ -1,14 +1,42 @@
-## App challenge
+# App challenge
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**Required steps to run project**
 
-## Installation
+- Copy and fill env variables
+- Run application via docker or without
+
+## Copy and fill env files
+
+```
+$ cp .env.sample .env
+
+$ cp .env.db.sample .env.db
+```
+
+## Run project
+
+**With docker**
+
+```
+$ docker compose up --build
+```
+
+**Without docker**
+
+### Installation
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+### Run migrations
+
+```
+$ npm run prisma:generate
+$ npm run prisma:migrate:deploy
+```
+
+### Running the app
 
 ```bash
 # development
@@ -33,17 +61,3 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
