@@ -14,14 +14,16 @@ datasource db {
 }
 
 model Collection {
-  id           Int    @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   name         String
   descriptions String
   stocks       Int
   price        Float
   userId       Int
   bids         Bid[]
-  user         User   @relation(fields: [userId], references: [id])
+  user         User      @relation(fields: [userId], references: [id])
+  created_at   DateTime? @default(now())
+  updated_at   DateTime? @updatedAt
 }
 
 model Bid {

@@ -17,7 +17,10 @@ export class CollectionService {
   private prisma: PrismaClient = new PrismaClient()
 
   async getAllCollections(): Promise<Collection[]> {
-    return this.prisma.collection.findMany()
+    return this.prisma.collection.findMany({
+      include: { bids: true },
+      orderBy: { created_at: 'desc' }
+    })
   }
 
   async getCollectionById(collectionId: number): Promise<Collection> {
