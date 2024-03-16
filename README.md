@@ -73,6 +73,9 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+### Swagger
+**Default Swagger link**
+http://localhost:8000/docs
 
 ## Test
 
