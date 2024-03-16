@@ -70,4 +70,14 @@ export class BidController {
   ): Promise<void> {
     return this.bidService.acceptBid(+collectionId, +bidId, payload)
   }
+
+  @Post('reject/:collectionId/:bidId')
+  @ApiOperation({ summary: 'Reject bid' })
+  async rejectBid(
+    @Param('collectionId') collectionId: string,
+    @Param('bidId') bidId: string,
+    @UserToken() payload: JWTPayload
+  ): Promise<void> {
+    return this.bidService.rejectBid(+collectionId, +bidId, payload)
+  }
 }

@@ -52,6 +52,7 @@ export class BidService {
     const bid = await this.prisma.bid.create({
       data: {
         ...data,
+        status: 'PENDING',
         collection: { connect: { id: collection.id } },
         user: { connect: { id: user.id } }
       }
@@ -150,5 +151,35 @@ export class BidService {
         data: { status: 'REJECTED' }
       })
     })
+    return
+  }
+
+  async rejectBid(
+    collectionId: number,
+    bidId: number,
+    payload: JWTPayload
+  ): Promise<void> {
+    const user = await this.userService.getUserByEmail(payload.email)
+    if (!user) {
+      throw new ForbiddenException('User not found')
+    }
+
+    const collection =
+      await this.collectionService.findCollectionById(collectionId)
+
+    if (!collection) {
+      throw new ForbiddenException('Collection not found')
+    }
+
+    if (user.id !== collection.userId) {
+      throw new ForbiddenException('You cannot accept bit for this collection')
+    }
+
+    await this.prisma.bid.update({
+      where: { id: bidId },
+      data: { status: 'REJECTED' }
+    })
+
+    return
   }
 }
