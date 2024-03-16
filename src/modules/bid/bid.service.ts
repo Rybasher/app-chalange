@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException
 } from '@nestjs/common'
-import { Bid, PrismaClient } from '@prisma/client'
+import { Bid, PrismaClient, StatusType } from '@prisma/client'
 import { CreateBidDto } from './dto/create-bid.dto'
 import { UpdateBitDto } from './dto/update-bit.dto'
 import { JWTPayload } from '../auth/interfaces/jwt.payload.interface'
@@ -47,6 +47,17 @@ export class BidService {
 
     if (!collection) {
       throw new ForbiddenException('Collection not found')
+    }
+
+    const acceptedBidInCollection = await this.prisma.bid.findFirst({
+      where: {
+        collectionId: collectionId,
+        status: StatusType.ACCEPTED
+      }
+    })
+
+    if (acceptedBidInCollection) {
+      throw new ForbiddenException('Collection already has an accepted bid')
     }
 
     const bid = await this.prisma.bid.create({
@@ -137,7 +148,7 @@ export class BidService {
       // Update the status of the accepted bid
       await prisma.bid.update({
         where: { id: bidId },
-        data: { status: 'ACCEPTED' }
+        data: { status: StatusType.ACCEPTED }
       })
 
       // Reject all other bids for the collection
@@ -148,7 +159,7 @@ export class BidService {
             id: bidId
           }
         },
-        data: { status: 'REJECTED' }
+        data: { status: StatusType.REJECTED }
       })
     })
     return
@@ -177,7 +188,7 @@ export class BidService {
 
     await this.prisma.bid.update({
       where: { id: bidId },
-      data: { status: 'REJECTED' }
+      data: { status: StatusType.REJECTED }
     })
 
     return

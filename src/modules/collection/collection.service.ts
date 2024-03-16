@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException
 } from '@nestjs/common'
-import { PrismaClient, Collection, Prisma } from '@prisma/client'
+import { PrismaClient, Collection } from '@prisma/client'
 import { JWTPayload } from '../auth/interfaces/jwt.payload.interface'
 import { UserService } from '../user/user.service'
 import { CreateCollectionDto } from './dto/create-collection.dto'
@@ -96,13 +96,14 @@ export class CollectionService {
       throw new ForbiddenException('You cannot update this collection')
     }
 
-    try {
-      await this.prisma.collection.delete({ where: { id } })
-    } catch (error) {
-      throw new BadRequestException(
-        'You cannot delete this collection, it has bids associated with it.'
-      )
-    }
+    await this.prisma.bid.deleteMany({
+      where: {
+        collectionId: id
+      }
+    })
+
+    await this.prisma.collection.delete({ where: { id } })
+
     return
   }
 }
