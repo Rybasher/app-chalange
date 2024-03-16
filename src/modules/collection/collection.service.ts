@@ -31,10 +31,10 @@ export class CollectionService {
     const skip = (page - 1) * limit || 0
 
     const data = await this.prisma.collection.findMany({
+      skip: skip,
+      take: limit,
       include: { bids: true },
-      orderBy: { created_at: 'desc' },
-      skip,
-      take: limit
+      orderBy: { id: 'desc' }
     })
 
     const total = await this.prisma.collection.count()
