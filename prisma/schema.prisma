@@ -19,7 +19,9 @@ model Collection {
   descriptions String
   stocks       Int
   price        Float
+  userId       Int
   bids         Bid[]
+  user         User   @relation(fields: [userId], references: [id])
 }
 
 model Bid {
@@ -33,10 +35,12 @@ model Bid {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
-  bids  Bid[]
+  id         Int          @id @default(autoincrement())
+  name       String
+  email      String       @unique
+  password   String
+  bids       Bid[]
+  Collection Collection[]
 }
 
 enum StatusType {
