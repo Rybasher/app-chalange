@@ -16,11 +16,35 @@ export class CollectionService {
 
   private prisma: PrismaClient = new PrismaClient()
 
-  async getAllCollections(): Promise<Collection[]> {
-    return this.prisma.collection.findMany({
+  async getAllCollections(page: number): Promise<{
+    data: Collection[]
+    total: number
+    page: number
+    limit: number
+  }> {
+    const limit = 10
+
+    if (typeof page !== 'number' || page < 1) {
+      page = 1
+    }
+
+    const skip = (page - 1) * limit || 0
+
+    const data = await this.prisma.collection.findMany({
       include: { bids: true },
-      orderBy: { created_at: 'desc' }
+      orderBy: { created_at: 'desc' },
+      skip,
+      take: limit
     })
+
+    const total = await this.prisma.collection.count()
+
+    return {
+      data,
+      total,
+      page,
+      limit
+    }
   }
 
   async getCollectionById(collectionId: number): Promise<Collection> {

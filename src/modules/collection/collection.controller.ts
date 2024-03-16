@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
@@ -26,8 +27,8 @@ export class CollectionController {
 
   @Get()
   @ApiOperation({ summary: 'Get all collections' })
-  async getAllCollections(): Promise<Collection[]> {
-    return this.collectionService.getAllCollections()
+  async getAllCollections(@Query('page') page: number) {
+    return this.collectionService.getAllCollections(+page)
   }
 
   @Get(':id')
