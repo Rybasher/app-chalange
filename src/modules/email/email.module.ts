@@ -3,6 +3,7 @@ import { EmailService } from './email.service'
 import { MailerModule } from '@nestjs-modules/mailer'
 import { join } from 'path'
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter'
+
 @Module({
   providers: [EmailService],
   imports: [
@@ -19,7 +20,7 @@ import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter'
           }
         },
         defaults: {
-          from: `"RESTAPI TRAINE NESTJS" <${process.env.SMTP_USERNAME}>`
+          from: `"APP CHALLENGE" <${process.env.SMTP_USERNAME}>`
         },
         template: {
           dir: join(__dirname, 'templates'),

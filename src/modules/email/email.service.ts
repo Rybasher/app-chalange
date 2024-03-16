@@ -7,13 +7,15 @@ export class EmailService {
 
   async sendEmailForgotPassword(token: string, email: string) {
     const verifUrl = `${process.env.FRONT_URL}/auth/forgot-password?token=${token}`
-    await this.mailerService.sendMail({
-      to: email,
-      subject: 'Forgot passwrod',
-      template: './forgotpassword',
-      context: {
-        verifUrl: verifUrl
-      }
-    })
+    try {
+      await this.mailerService.sendMail({
+        to: email,
+        subject: 'Forgot passwrod',
+        template: './forgotpassword',
+        context: {
+          verifUrl: verifUrl
+        }
+      })
+    } catch (error) {}
   }
 }
