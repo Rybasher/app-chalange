@@ -3,11 +3,13 @@ import { AppModule } from './app.module'
 import { HttpExceptionFilter } from './utils/filters/expception-filter.utils'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { ValidationPipe } from '@nestjs/common'
-import { env } from 'process'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-
+  app.enableCors({
+    origin: [process.env.FRONT_URL],
+    credentials: true
+  })
   const config = new DocumentBuilder()
     .setTitle('app-challenge-api')
     .setDescription('Documentation')
