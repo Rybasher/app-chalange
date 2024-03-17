@@ -22,7 +22,7 @@ export class CollectionService {
     page: number
     limit: number
   }> {
-    const limit = 10
+    const limit = 5
 
     if (typeof page !== 'number' || page < 1) {
       page = 1
